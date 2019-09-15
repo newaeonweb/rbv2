@@ -1,0 +1,36 @@
+{
+  "name": "responsiveboilerplate-v2",
+  "version": "2.0.0",
+  "description": "Responsive grid system based on flexbox with extra helpers",
+  "scripts": {
+    "stylelint": "./node_modules/.bin/stylelint src/**/*.scss",
+    "build-css": "./node_modules/.bin/node-sass --include-path scss src/scss/rbv2.scss -o dest/css",
+    "clean-css": "./node_modules/.bin/cleancss -o dest/css/rbv2.min.css dest/css/rbv2.css",
+    "prettier:format": "./node_modules/.bin/prettier --write 'src/**/*.scss'",
+    "prettier:watch": "onchange 'src/**/*.scss' -- ./node_modules/.bin/prettier --write {{changed}}",
+    "build": "npm run stylelint && npm run prettier:format && npm run build-css && npm run clean-css",
+    "start": "./node_modules/.bin/http-server ./demo -p 8000 -o",
+    "serve": "./node_modules/.bin/browser-sync start --server --files \"./demo/index.html\" --startPath \"./demo/\" "
+  },
+  "keywords": [
+    "scss-grid",
+    "grid",
+    "flexbox",
+    "responsive-web",
+    "css",
+    "grind"
+  ],
+  "author": "newaeonweb",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "clean-css": "^4.2.1",
+    "clean-css-cli": "^4.3.0",
+    "http-server": "^0.11.1",
+    "node-sass": "^4.12.0",
+    "onchange": "^6.1.0",
+    "prettier": "^1.18.2",
+    "stylelint": "^10.1.0",
+    "stylelint-scss": "^3.10.1"
+  }
+}

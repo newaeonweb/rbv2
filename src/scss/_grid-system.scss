@@ -1,0 +1,217 @@
+// Grid system based on CSS flexbox
+
+$columns: 12;
+$mobile-sm: 768px;
+$tablet-md: 992px;
+$desk-lg: 1200px;
+$gutter-width: 1rem;
+$half-gutter-width: $gutter-width / 2;
+$negative-gutter: -1 * $half-gutter-width;
+
+$viewport-medias: (
+  'xs': (),
+  'sm': (
+    'min-width': $mobile-sm,
+  ),
+  'md': (
+    'min-width': $tablet-md,
+  ),
+  'lg': (
+    'min-width': $desk-lg,
+  ),
+);
+
+@mixin make-row($reverse: false) {
+  @include make-row-direction($reverse);
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  margin-right: $negative-gutter;
+  margin-left: $negative-gutter;
+}
+
+@mixin make-row-direction($reverse: false) {
+  @if ($reverse) {
+    flex-direction: row-reverse;
+  } @else {
+    flex-direction: row;
+  }
+}
+
+@mixin make-row-horizontal-align($alignment) {
+  $justify: inherit;
+
+  @if ($alignment == center) {
+    $justify: center;
+  } @else if ($alignment == end) {
+    $justify: flex-end;
+  } @else if ($alignment == start) {
+    $justify: flex-start;
+  }
+
+  justify-content: $justify;
+  text-align: $alignment;
+}
+
+@mixin make-row-vertical-align($alignment) {
+  @if ($alignment == middle) {
+    align-items: center;
+  } @else if ($alignment == bottom) {
+    align-items: flex-end;
+  } @else {
+    align-items: flex-start;
+  }
+}
+
+@mixin make-row-spacing($spacing) {
+  justify-content: $spacing;
+}
+
+@mixin make-column($reverse: false) {
+  @include make-column-direction($reverse);
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 1 auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding-right: $half-gutter-width;
+  padding-left: $half-gutter-width;
+}
+
+@mixin make-column-direction($reverse: false) {
+  @if ($reverse) {
+    flex-direction: column-reverse;
+  } @else {
+    flex-direction: column;
+  }
+}
+
+@mixin make-column-span($columns-to-span: 12, $total-columns-in-row: 12) {
+  @if ($columns-to-span == auto) {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+  } @else {
+    $span-percentage: $columns-to-span / $total-columns-in-row;
+
+    flex-basis: $span-percentage * 100%;
+    max-width: $span-percentage * 100%;
+  }
+}
+
+@mixin make-column-offset($columns-to-offset, $total-columns-in-row: 12) {
+  margin-left: ($columns-to-offset / $total-columns-in-row) * 100%;
+}
+
+@mixin make-column-order($position) {
+  @if ($position == last) {
+    $position: 9999;
+  } @else if ($position == first) {
+    $position: -9999;
+  }
+
+  order: $position;
+}
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 2rem;
+  padding-left: 2rem;
+}
+
+.row {
+  @include make-row;
+}
+
+.row.reverse {
+  @include make-row-direction(true);
+}
+
+.col.reverse {
+  @include make-column-direction($reverse: true);
+}
+
+@mixin create-viewport-medias($key) {
+  .col-#{$key} {
+    $str: '&';
+    @for $i from 1 through $columns {
+      $str: $str ',' & + '-' + $i + ',' + & + '-offset-' + $i;
+    }
+
+    @at-root #{$str} {
+      @include make-column;
+    }
+
+    & {
+      @include make-column-span(auto);
+    }
+
+    @for $i from 1 through $columns {
+      &-#{$i} {
+        @include make-column-span($i);
+      }
+
+      &-offset-#{$i} {
+        @include make-column-offset($i);
+      }
+    }
+  }
+
+  .start-#{$key} {
+    @include make-row-horizontal-align(start);
+  }
+
+  .center-#{$key} {
+    @include make-row-horizontal-align(center);
+  }
+
+  .end-#{$key} {
+    @include make-row-horizontal-align(end);
+  }
+
+  .top-#{$key} {
+    @include make-row-vertical-align(top);
+  }
+
+  .middle-#{$key} {
+    @include make-row-vertical-align(middle);
+  }
+
+  .bottom-#{$key} {
+    @include make-row-vertical-align(bottom);
+  }
+
+  .around-#{$key} {
+    @include make-row-spacing(space-around);
+  }
+
+  .between-#{$key} {
+    @include make-row-spacing(space-between);
+  }
+
+  .first-#{$key} {
+    @include make-column-order(first);
+  }
+
+  .last-#{$key} {
+    @include make-column-order(last);
+  }
+}
+
+@each $key, $value in $viewport-medias {
+  @if ($key == xs) {
+    @include create-viewport-medias($key);
+  } @else {
+    $min-width: map-get($value, 'min-width');
+    @media screen and (min-width: $min-width) {
+      @include create-viewport-medias($key);
+
+      .container {
+        width: $min-width;
+        margin: 0 auto;
+      }
+    }
+  }
+}

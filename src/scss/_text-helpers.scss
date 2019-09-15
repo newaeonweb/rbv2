@@ -1,0 +1,71 @@
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+.text-light {
+  font-weight: 300;
+}
+.text-normal {
+  font-weight: 400;
+}
+.text-semibold {
+  font-weight: 600;
+}
+.text-bold {
+  font-weight: 800;
+}
+
+.text-caps {
+  text-transform: uppercase;
+}
+.text-lowercase {
+  text-transform: lowercase;
+}
+.text-firstcap {
+  text-transform: capitalize;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.break-word {
+  word-wrap: break-word;
+}
+.no-wrap {
+  white-space: nowrap !important;
+}
+
+.align-top {
+  vertical-align: top;
+}
+.align-bottom {
+  vertical-align: bottom;
+}
+.align-middle {
+  vertical-align: middle;
+}
+.align-baseline {
+  vertical-align: baseline;
+}
+
+// List
+.no-style {
+  list-style: none;
+}
+.bullets-inside {
+  list-style: inside;
+}
+.list-bare {
+  margin: 0;
+  padding: 0;
+  @extend .no-style;
+}
