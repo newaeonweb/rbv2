@@ -9,8 +9,7 @@
     "prettier:format": "./node_modules/.bin/prettier --write 'src/**/*.scss'",
     "prettier:watch": "onchange 'src/**/*.scss' -- ./node_modules/.bin/prettier --write {{changed}}",
     "build": "npm run stylelint && npm run prettier:format && npm run build-css && npm run clean-css",
-    "start": "./node_modules/.bin/http-server ./demo -p 8000 -o",
-    "serve": "./node_modules/.bin/browser-sync start --server --files \"./demo/index.html\" --startPath \"./demo/\" "
+    "serve:demo": "./node_modules/.bin/browser-sync start --server --files \"./demo/index.html\", \"./demo/js/*.js\" --startPath \"./demo/\" "
   },
   "keywords": [
     "scss-grid",
@@ -26,6 +25,9 @@
     "browser-sync": "^2.26.7",
     "clean-css": "^4.2.1",
     "clean-css-cli": "^4.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "http-server": "^0.11.1",
     "node-sass": "^4.12.0",
     "onchange": "^6.1.0",
